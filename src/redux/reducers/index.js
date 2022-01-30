@@ -1,10 +1,10 @@
-const initialState = {};
+import { combineReducers } from "redux";
+import UIReducer from "./uiReducer";
+import ProductsReducer from "./productsReducer";
 
-const productReducer = (state = initialState, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
+const rootReducer = combineReducers({
+  ui: UIReducer,
+  entities: ProductsReducer,
+});
 
-export default productReducer;
+export default rootReducer;

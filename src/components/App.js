@@ -1,31 +1,29 @@
+import React, { useEffect } from "react";
 import Header from "./Header";
 import DrugsList from "./DrugsList";
 import { drugs } from "../shared/data";
 import styled from "styled-components";
-// import Feedback from "./Feedback";
-import ModalWrapper from "./modals/ModalWrapper";
-import AddEditDrugModal from "./modals/AddEditDrugModal";
-import DeleteDrugModal from "./modals/DeleteDrugModal";
+// import ModalWrapper from "./modals/ModalWrapper";
 
-function App() {
+function App(props) {
   return (
     <Wrapper>
       <Header />
-      <DrugsList products={drugs.products} />
+      <DrugsList />
 
-      <ModalWrapper>
-        {/* <AddEditDrugModal
+      {/* <ModalWrapper>
+        <AddEditDrugModal
           drugName="Para"
           drugPrice="GHS 20"
           title="Edit Drug"
           modalAction={{ text: "Save", task: () => {} }}
-        /> */}
+        />
         <DeleteDrugModal
           title="Delete Drug"
           modalAction={{ text: "Delete", task: () => {} }}
           drugName="Para"
         />
-      </ModalWrapper>
+      </ModalWrapper> */}
     </Wrapper>
   );
 }

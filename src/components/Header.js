@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "./Button";
+import BarLoader from "react-spinners/BarLoader";
+import { connect } from "react-redux";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <Wrapper>
       <Logo
@@ -12,11 +14,32 @@ const Header = () => {
         data-testid="mpharma-logo"
       />
       <Button type="primary">Add a Drug</Button>
+      {props.isLoading ? (
+        <BarLoader
+          color="#ff5000"
+          height={4}
+          loading={true}
+          css={{
+            position: "absolute",
+            bottom: "0px",
+            left: "0px",
+            width: "100%",
+          }}
+        />
+      ) : (
+        ""
+      )}
     </Wrapper>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.ui.isLoading,
+  };
+};
+
+export default connect(mapStateToProps)(Header);
 
 const Wrapper = styled.div`
   height: 100px;

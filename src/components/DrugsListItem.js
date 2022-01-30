@@ -6,7 +6,7 @@ const DrugListItem = (props) => {
     <Wrapper data-testid="drugs-list-item">
       <ItemDetails>
         <ItemName data-testid="item-name">{props.name}</ItemName>
-        <ItemPrice data-testid="item-price">{props.price}</ItemPrice>
+        <ItemPrice data-testid="item-price">GHS {props.price}</ItemPrice>
       </ItemDetails>
       <ButtonsWrapper>
         <ImageButton src="/images/edit.png" height="25" />

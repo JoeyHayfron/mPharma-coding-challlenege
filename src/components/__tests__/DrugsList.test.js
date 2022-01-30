@@ -1,11 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import DrugsList from "../DrugsList";
-import { drugs } from "../../shared/stubs";
+import { mockState } from "../../shared/stubs";
+import Root from "../../Root";
 
 describe("<DrugsList />", () => {
   it("renders a list of seven drug items", () => {
-    render(<DrugsList products={drugs.products} />);
+    render(
+      <Root state={mockState}>
+        <DrugsList />
+      </Root>
+    );
     const drugsList = screen.queryAllByTestId("drugs-list-item");
-    expect(drugsList.length).toEqual(7);
+    expect(drugsList.length).toEqual(3);
   });
 });

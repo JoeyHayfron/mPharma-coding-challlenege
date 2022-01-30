@@ -1,18 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import DrugListItem from "./DrugsListItem";
+import { connect } from "react-redux";
+import { fetchProductsAsync } from "../redux/actions";
+import { findLatestPrice } from "../utils/helper";
 
 const DrugList = (props) => {
+  useEffect(() => {
+    props.fetchProducts();
+  }, []);
+
   return (
     <Wrapper>
-      {props.products.map((drug) => (
-        <DrugListItem key={drug.id} name={drug.name} price="GHS 20" />
-      ))}
+      {props.entities.products
+        ? props.entities.products.allIds.map((id) => (
+            <DrugListItem
+              key={id}
+              name={props.entities.products.byId[id].name}
+              price={findLatestPrice(
+                props.entities.products.byId[id].prices,
+                props.entities.prices
+              )}
+            />
+          ))
+        : ""}
     </Wrapper>
   );
 };
 
-export default DrugList;
+const mapStateToProps = (state) => {
+  return {
+    entities: state.entities,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchProducts: () => dispatch(fetchProductsAsync()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DrugList);
 
 const Wrapper = styled.div`
   width: 80%;

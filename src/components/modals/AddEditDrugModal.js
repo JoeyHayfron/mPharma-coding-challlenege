@@ -10,12 +10,14 @@ const AddEditDrugModal = (props) => {
   const [drugName, setDrugName] = useState(props.modalInfo.name);
   const [drugPrice, setDrugPrice] = useState(props.modalInfo.name);
 
-  const addNewProduct = (productInfo) => {
+  const addNewProduct = (e) => {
+    e.preventDefault();
     props.addProduct({
       name: drugName,
       price: drugPrice,
       date: moment(Date.now()).format("YYYY-MM-DDTHH:mm:ssZ"),
     });
+    props.dismissModal();
   };
   const editNewProduct = (productInfo) => {};
 

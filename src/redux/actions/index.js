@@ -2,12 +2,14 @@ import {
   SHOW_MODAL,
   HIDE_MODAL,
   ADD_PRODUCT,
-  FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_FAILED,
+  FETCH_PRODUCTS_FROM_NETWORK_SUCCESS,
+  FETCH_PRODUCTS_FROM_CACHE_SUCCESS,
+  FETCH_PRODUCTS_FROM_NETWORK_FAILED,
   SHOW_LOADER,
   HIDE_LOADER,
 } from "./types";
 import axios from "axios";
+import { cache } from "../../cache";
 
 export const showModal = (modalInfo) => {
   return {
@@ -31,14 +33,20 @@ export const addProduct = (productInfo) => {
 
 export const fetchProductsSuccess = (products) => {
   return {
-    type: FETCH_PRODUCTS_SUCCESS,
+    type: FETCH_PRODUCTS_FROM_NETWORK_SUCCESS,
     payload: products,
   };
 };
 
+const fetchProductsFromCache = (products) => {
+  return {
+    type: FETCH_PRODUCTS_FROM_CACHE_SUCCESS,
+    payload: products,
+  };
+};
 export const fetchProductsFailed = (errMsg) => {
   return {
-    type: FETCH_PRODUCTS_SUCCESS,
+    type: FETCH_PRODUCTS_FROM_NETWORK_FAILED,
     payload: errMsg,
   };
 };
@@ -58,17 +66,24 @@ export const hideLoader = () => {
 export const fetchProductsAsync = () => {
   return (dispatch) => {
     dispatch(showLoader());
-    axios
-      .get("http://www.mocky.io/v2/5c3e15e63500006e003e9795")
-      .then((response) => {
+    cache.getAll().then((data) => {
+      if (Object.keys(data).length > 0) {
         dispatch(hideLoader());
-        dispatch(fetchProductsSuccess(response.data.products));
-      })
-      .catch((err) => {
-        dispatch(hideLoader());
-        dispatch(
-          fetchProductsFailed("An error occurred while fetching products")
-        );
-      });
+        dispatch(fetchProductsFromCache(data.inventory));
+      } else {
+        axios
+          .get("http://www.mocky.io/v2/5c3e15e63500006e003e9795")
+          .then((response) => {
+            dispatch(hideLoader());
+            dispatch(fetchProductsSuccess(response.data.products));
+          })
+          .catch((err) => {
+            dispatch(hideLoader());
+            dispatch(
+              fetchProductsFailed("An error occurred while fetching products")
+            );
+          });
+      }
+    });
   };
 };

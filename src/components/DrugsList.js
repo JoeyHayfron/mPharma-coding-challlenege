@@ -13,16 +13,18 @@ const DrugList = (props) => {
   return (
     <Wrapper>
       {props.entities.products
-        ? props.entities.products.allIds.map((id) => (
-            <DrugListItem
-              key={id}
-              name={props.entities.products.byId[id].name}
-              price={findLatestPrice(
-                props.entities.products.byId[id].prices,
-                props.entities.prices
-              )}
-            />
-          ))
+        ? props.entities.products.allIds
+            .map((id) => (
+              <DrugListItem
+                key={id}
+                name={props.entities.products.byId[id].name}
+                price={findLatestPrice(
+                  props.entities.products.byId[id].prices,
+                  props.entities.prices
+                )}
+              />
+            ))
+            .reverse()
         : ""}
     </Wrapper>
   );

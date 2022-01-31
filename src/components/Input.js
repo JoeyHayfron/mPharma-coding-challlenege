@@ -11,10 +11,12 @@ const Input = (props) => {
       </Label>
       <CustomInput
         id={props.label}
-        type="text"
+        type={props.type}
         placeholder={props.label}
         onFocus={() => setShowLabel(true)}
-        onBlur={() => setShowLabel(false)}
+        onBlur={() => {
+          props.inputValue ? setShowLabel(true) : setShowLabel(false);
+        }}
         value={props.inputValue}
         onChange={props.onChange}
         data-testid="custom-input"

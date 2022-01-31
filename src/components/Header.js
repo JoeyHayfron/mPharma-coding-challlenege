@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import BarLoader from "react-spinners/BarLoader";
 import { connect } from "react-redux";
+import { showModal } from "../redux/actions";
 
 const Header = (props) => {
   return (
@@ -13,7 +14,18 @@ const Header = (props) => {
         alt="mpharma-logo"
         data-testid="mpharma-logo"
       />
-      <Button type="primary">Add a Drug</Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          props.showModal({
+            modalType: "add-drug-modal",
+            title: "Add Drug",
+            action: "Add",
+          });
+        }}
+      >
+        Add a Drug
+      </Button>
       {props.isLoading ? (
         <BarLoader
           color="#ff5000"
@@ -39,7 +51,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showModal: (modalInfo) => dispatch(showModal(modalInfo)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 const Wrapper = styled.div`
   height: 100px;

@@ -4,7 +4,7 @@ import ProductsReducer from "./productsReducer";
 
 const rootReducer = combineReducers({
   ui: UIReducer,
-  entities: ProductsReducer,
+  inventory: ProductsReducer,
 });
 
 export default rootReducer;

@@ -3,7 +3,7 @@ import Header from "./Header";
 import DrugsList from "./DrugsList";
 import { drugs } from "../shared/data";
 import styled from "styled-components";
-// import ModalWrapper from "./modals/ModalWrapper";
+import Modal from "./modals/Modal";
 
 function App(props) {
   return (
@@ -11,19 +11,7 @@ function App(props) {
       <Header />
       <DrugsList />
 
-      {/* <ModalWrapper>
-        <AddEditDrugModal
-          drugName="Para"
-          drugPrice="GHS 20"
-          title="Edit Drug"
-          modalAction={{ text: "Save", task: () => {} }}
-        />
-        <DeleteDrugModal
-          title="Delete Drug"
-          modalAction={{ text: "Delete", task: () => {} }}
-          drugName="Para"
-        />
-      </ModalWrapper> */}
+      <Modal />
     </Wrapper>
   );
 }

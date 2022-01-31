@@ -1,7 +1,7 @@
 import {
-  SHOW_ADD_PRODUCT_MODAL,
-  SHOW_EDIT_PRODUCT_MODAL,
+  SHOW_MODAL,
   HIDE_MODAL,
+  ADD_PRODUCT,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILED,
   SHOW_LOADER,
@@ -9,22 +9,23 @@ import {
 } from "./types";
 import axios from "axios";
 
-// export const addProduct = (product) => {
-//   return {
-//     type: ADD_PRODUCT,
-//     payload: product,
-//   };
-// };
-
-export const showAddProductModal = () => {
+export const showModal = (modalInfo) => {
   return {
-    type: SHOW_ADD_PRODUCT_MODAL,
+    type: SHOW_MODAL,
+    payload: modalInfo,
   };
 };
 
-export const hideProductModal = () => {
+export const hideModal = () => {
   return {
     type: HIDE_MODAL,
+  };
+};
+
+export const addProduct = (productInfo) => {
+  return {
+    type: ADD_PRODUCT,
+    payload: productInfo,
   };
 };
 
@@ -53,6 +54,7 @@ export const hideLoader = () => {
     type: HIDE_LOADER,
   };
 };
+
 export const fetchProductsAsync = () => {
   return (dispatch) => {
     dispatch(showLoader());

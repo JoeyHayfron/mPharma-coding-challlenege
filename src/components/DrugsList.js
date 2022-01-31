@@ -30,7 +30,7 @@ const DrugList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    entities: state.entities,
+    entities: state.inventory.entities,
   };
 };
 
@@ -39,6 +39,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchProducts: () => dispatch(fetchProductsAsync()),
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(DrugList);
 
 const Wrapper = styled.div`

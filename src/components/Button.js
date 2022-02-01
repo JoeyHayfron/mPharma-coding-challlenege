@@ -20,4 +20,5 @@ const Wrapper = styled.button`
   color: ${(props) => (props.buttonType === "primary" ? "#eaf7ef" : "#ff5000")};
   border-radius: 100px;
   padding: 20px 35px;
+  cursor: pointer;
 `;

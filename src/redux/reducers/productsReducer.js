@@ -3,9 +3,14 @@ import {
   ADD_PRODUCT,
   EDIT_PRODUCT,
   FETCH_PRODUCTS_FROM_CACHE_SUCCESS,
+  DELETE_PRODUCT,
 } from "../actions/types";
-import { normalizeStateData } from "../../utils/helper";
-import { addNewProduct, editProduct } from "../../utils/helper";
+import {
+  normalizeStateData,
+  addNewProduct,
+  editProduct,
+  deleteProduct,
+} from "../../utils/helper";
 
 const initialState = {
   entities: {},
@@ -35,6 +40,11 @@ const productReducer = (state = initialState, action) => {
             action.payload.previousInfo
           ),
         },
+      };
+    case DELETE_PRODUCT:
+      return {
+        ...state,
+        entities: { ...deleteProduct(state.entities, action.payload) },
       };
     default:
       return state;

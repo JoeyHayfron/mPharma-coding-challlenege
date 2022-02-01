@@ -8,6 +8,7 @@ import {
   FETCH_PRODUCTS_FROM_NETWORK_FAILED,
   SHOW_LOADER,
   HIDE_LOADER,
+  DELETE_PRODUCT,
 } from "./types";
 import axios from "axios";
 import { cache } from "../../cache";
@@ -35,6 +36,13 @@ export const addProduct = (productInfo) => {
 export const editProduct = (productInfo) => {
   return {
     type: EDIT_PRODUCT,
+    payload: productInfo,
+  };
+};
+
+export const deleteProduct = (productInfo) => {
+  return {
+    type: DELETE_PRODUCT,
     payload: productInfo,
   };
 };

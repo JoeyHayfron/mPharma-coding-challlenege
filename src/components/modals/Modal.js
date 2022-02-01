@@ -11,7 +11,7 @@ const ModalWrapper = (props) => {
       <Content>
         {props.modalInfo ? (
           props.modalInfo.modalType === "add-drug-modal" ||
-          "edit-drug-modal" ? (
+          props.modalInfo.modalType === "edit-drug-modal" ? (
             <AddEditDrugModal />
           ) : props.modalInfo.modalType === "delete-drug-modal" ? (
             <DeleteDrugModal />

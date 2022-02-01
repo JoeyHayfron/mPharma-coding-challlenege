@@ -8,7 +8,12 @@ const DrugListItem = (props) => {
     <Wrapper data-testid="drugs-list-item">
       <ItemDetails>
         <ItemName data-testid="item-name">{props.name}</ItemName>
-        <ItemPrice data-testid="item-price">GHS {props.price}</ItemPrice>
+        <div>
+          <span>
+            <b>Current Price: </b>
+          </span>
+          <ItemPrice data-testid="item-price">GHS {props.price}</ItemPrice>
+        </div>
       </ItemDetails>
       <ButtonsWrapper>
         <ImageButton
@@ -25,7 +30,19 @@ const DrugListItem = (props) => {
             })
           }
         />
-        <ImageButton src="/images/delete.png" height="25" />
+        <ImageButton
+          src="/images/delete.png"
+          height="25"
+          onClick={() =>
+            props.showModal({
+              title: "Delete Drug",
+              modalType: "delete-drug-modal",
+              id: props.id,
+              name: props.name,
+              action: "Delete",
+            })
+          }
+        />
       </ButtonsWrapper>
     </Wrapper>
   );
@@ -71,6 +88,7 @@ const ItemName = styled.p`
 const ItemPrice = styled.p`
   padding: 0px;
   margin: 0px;
+  display: inline-block;
 `;
 
 const ImageButton = styled.img`

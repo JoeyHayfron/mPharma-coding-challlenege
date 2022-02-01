@@ -32,8 +32,11 @@ export const findLatestPrice = (productPrices, allPrices) => {
 };
 
 export const addNewProduct = (entities, productInfo) => {
-  const nextProductId = entities.products.allIds.length + 1;
-  const nextPriceId = entities.prices.allIds.length + 1;
+  const nextProductId =
+    parseInt(+entities.products.allIds[entities.products.allIds.length - 1]) +
+    1;
+  const nextPriceId =
+    parseInt(+entities.prices.allIds[entities.prices.allIds.length - 1]) + 1;
 
   entities.products.byId[nextProductId] = {
     id: nextProductId,
@@ -85,10 +88,19 @@ export const editProduct = (entities, productInfo, previousInfo) => {
   }
 };
 
+export const deleteProduct = (entities, productInfo) => {
+  entities.products.allIds = entities.products.allIds.filter(
+    (id) => id !== productInfo.id
+  );
+  delete entities.products.byId[productInfo.id];
+  return entities;
+};
+
 const addProductPrice = (entities, productInfo) => {
   let products = entities.products;
   let prices = entities.prices;
-  const nextPriceId = entities.prices.allIds.length + 1;
+  const nextPriceId =
+    parseInt(+entities.prices.allIds[entities.prices.allIds.length - 1]) + 1;
 
   prices.byId[nextPriceId] = {
     id: nextPriceId,

@@ -1,30 +1,57 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import Button from "../Button";
+import { deleteProduct, hideModal } from "../../redux/actions";
 
 const DeleteDrugModal = (props) => {
+  const deleteProduct = () => {
+    let productInfo = {
+      id: props.modalInfo.id,
+      name: props.modalInfo.name,
+    };
+
+    props.deleteProduct(productInfo);
+
+    props.dismissModal();
+  };
   return (
     <Wrapper>
-      <h3>{props.title}</h3>
+      <h3>{props.modalInfo.title}</h3>
       <div>
         Are you sure you want to delete{" "}
         <span
           style={{ color: "#ff5000", fontWeight: "600" }}
           data-testid="delete-drug-name"
         >
-          {props.drugName}
+          {props.modalInfo.name}
         </span>
         ?
       </div>
       <ButtonsWrapper>
-        <Button>Cancel</Button>
-        <Button buttonType="primary">{props.modalAction.text}</Button>
+        <Button onClick={() => props.dismissModal()}>Cancel</Button>
+        <Button buttonType="primary" onClick={deleteProduct}>
+          {props.modalInfo.action}
+        </Button>
       </ButtonsWrapper>
     </Wrapper>
   );
 };
 
-export default DeleteDrugModal;
+const mapStateToProps = (state) => {
+  return {
+    modalInfo: state.ui.modalInfo,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteProduct: (productInfo) => dispatch(deleteProduct(productInfo)),
+    dismissModal: () => dispatch(hideModal()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteDrugModal);
 
 const Wrapper = styled.div`
   display: flex;

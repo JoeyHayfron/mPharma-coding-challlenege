@@ -3,15 +3,44 @@ import styled from "styled-components";
 import Input from "../Input";
 import Button from "../Button";
 import { connect } from "react-redux";
-import { hideModal, addProduct, editProduct } from "../../redux/actions";
+import {
+  hideModal,
+  addProduct,
+  editProduct,
+  showFeedback,
+} from "../../redux/actions";
 import moment from "moment";
 
 const AddEditDrugModal = (props) => {
   const [drugName, setDrugName] = useState(props.modalInfo.name);
   const [drugPrice, setDrugPrice] = useState(props.modalInfo.price);
 
+  const hasErrors = () => {
+    if (!drugName || !drugPrice) {
+      props.showFeedback({
+        feedbackType: "warning",
+        title: "Invalid Entry",
+        message: "Please fill all fields",
+        autoDismiss: true,
+      });
+      return true;
+    }
+
+    if (isNaN(drugPrice)) {
+      props.showFeedback({
+        feedbackType: "warning",
+        title: "Invalid Entry",
+        message: "Price must be a number",
+        autoDismiss: true,
+      });
+      return true;
+    }
+    return false;
+  };
+
   const addNewProduct = (e) => {
     e.preventDefault();
+    if (hasErrors()) return;
     props.addProduct({
       name: drugName,
       price: parseFloat(+drugPrice),
@@ -22,6 +51,7 @@ const AddEditDrugModal = (props) => {
 
   const editNewProduct = (e) => {
     e.preventDefault();
+    if (hasErrors()) return;
     let productInfo = {
       id: props.modalInfo.id,
       name: drugName,
@@ -96,6 +126,7 @@ const mapDispatchToProps = (dispatch) => {
     dismissModal: () => dispatch(hideModal()),
     addProduct: (productInfo) => dispatch(addProduct(productInfo)),
     editProduct: (productInfo) => dispatch(editProduct(productInfo)),
+    showFeedback: (feedbackInfo) => dispatch(showFeedback(feedbackInfo)),
   };
 };
 

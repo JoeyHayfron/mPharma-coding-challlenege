@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Header from "./Header";
 import DrugsList from "./DrugsList";
-import { drugs } from "../shared/data";
+import Feedback from "./Feedback";
 import styled from "styled-components";
 import Modal from "./modals/Modal";
 
@@ -12,6 +12,7 @@ function App(props) {
       <DrugsList />
 
       <Modal />
+      <Feedback />
     </Wrapper>
   );
 }

@@ -34,6 +34,7 @@ const DrugList = (props) => {
 const mapStateToProps = (state) => {
   return {
     entities: state.inventory.entities,
+    errMsg: state.errors,
   };
 };
 

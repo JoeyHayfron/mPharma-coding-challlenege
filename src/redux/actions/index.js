@@ -1,11 +1,12 @@
 import {
   SHOW_MODAL,
   HIDE_MODAL,
+  SHOW_FEEDBACK,
+  HIDE_FEEDBACK,
   ADD_PRODUCT,
   EDIT_PRODUCT,
   FETCH_PRODUCTS_FROM_NETWORK_SUCCESS,
   FETCH_PRODUCTS_FROM_CACHE_SUCCESS,
-  FETCH_PRODUCTS_FROM_NETWORK_FAILED,
   SHOW_LOADER,
   HIDE_LOADER,
   DELETE_PRODUCT,
@@ -23,6 +24,19 @@ export const showModal = (modalInfo) => {
 export const hideModal = () => {
   return {
     type: HIDE_MODAL,
+  };
+};
+
+export const showFeedback = (feedbackInfo) => {
+  return {
+    type: SHOW_FEEDBACK,
+    payload: feedbackInfo,
+  };
+};
+
+export const hideFeedback = () => {
+  return {
+    type: HIDE_FEEDBACK,
   };
 };
 
@@ -60,12 +74,6 @@ const fetchProductsFromCache = (products) => {
     payload: products,
   };
 };
-export const fetchProductsFailed = (errMsg) => {
-  return {
-    type: FETCH_PRODUCTS_FROM_NETWORK_FAILED,
-    payload: errMsg,
-  };
-};
 
 export const showLoader = () => {
   return {
@@ -82,6 +90,7 @@ export const hideLoader = () => {
 export const fetchProductsAsync = () => {
   return (dispatch) => {
     dispatch(showLoader());
+    dispatch(hideFeedback());
     cache.getAll().then((data) => {
       if (Object.keys(data).length > 0) {
         dispatch(hideLoader());
@@ -96,7 +105,16 @@ export const fetchProductsAsync = () => {
           .catch((err) => {
             dispatch(hideLoader());
             dispatch(
-              fetchProductsFailed("An error occurred while fetching products")
+              showFeedback({
+                feedbackType: "error",
+                title: "Error Occurred",
+                message: "An error occurred while fetching products",
+                autoDismiss: false,
+                action: {
+                  text: "Retry",
+                  task: () => dispatch(fetchProductsAsync()),
+                },
+              })
             );
           });
       }

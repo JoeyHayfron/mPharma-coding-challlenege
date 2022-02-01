@@ -1,19 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { hideFeedback } from "../redux/actions";
+import { connect } from "react-redux";
 
 const Feedback = (props) => {
+  useEffect(() => {
+    if (props.feedbackInfo) {
+      if (props.feedbackInfo.autoDismiss) {
+        setTimeout(() => props.hideFeedback(), 3000);
+      }
+    }
+  }, [props.feedbackInfo]);
   return (
-    <Wrapper>
-      <Content feedbackType={props.feedBackType}>
-        <h3 style={{ margin: "0px" }}>{props.title}</h3>
-        <p>{props.message}</p>
-        <Retry>{props.action}</Retry>
-      </Content>
+    <Wrapper showFeedback={props.showFeedback}>
+      {props.feedbackInfo ? (
+        <Content feedbackType={props.feedbackInfo.feedbackType}>
+          <h3 style={{ margin: "0px" }}>{props.feedbackInfo.title}</h3>
+          <p>{props.feedbackInfo.message}</p>
+          <Retry
+            onClick={() =>
+              props.feedbackInfo.action ? props.feedbackInfo.action.task() : ""
+            }
+          >
+            {props.feedbackInfo.action ? props.feedbackInfo.action.text : ""}
+          </Retry>
+        </Content>
+      ) : (
+        ""
+      )}
     </Wrapper>
   );
 };
 
-export default Feedback;
+const mapStateToProps = (state) => {
+  return {
+    showFeedback: state.ui.showFeedback,
+    feedbackInfo: state.ui.feedbackInfo,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    hideFeedback: () => dispatch(hideFeedback()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
 
 const Wrapper = styled.div`
   width: 82%;
@@ -26,7 +58,9 @@ const Wrapper = styled.div`
   right: 10px;
   overflow: hidden;
   z-index: 300;
-  transform: translateX();
+  transition: all 0.3s ease-in-out;
+  transform: ${(props) =>
+    props.showFeedback ? "translateX(0%)" : "translateX(110%)"};
 
   @media (min-width: 992px) {
     width: 28%;
@@ -35,9 +69,9 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   background: ${(props) =>
-    props.feedBackType === "error"
+    props.feedbackType === "error"
       ? "rgba(255, 0, 0, 0.3)"
-      : props.feedBackType === "warning"
+      : props.feedbackType === "warning"
       ? "rgba(255, 233, 0, 0.3)"
       : "rgba(0, 255, 0, 0.3)"};
   height: 100%;
@@ -47,7 +81,7 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-const Retry = styled.span`
+const Retry = styled.div`
   cursor: pointer;
   color: red;
   align-self: flex-end;

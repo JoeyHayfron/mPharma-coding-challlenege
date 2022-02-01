@@ -19,7 +19,10 @@ const initialState = {
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS_FROM_NETWORK_SUCCESS:
-      return { ...state, entities: { ...normalizeStateData(action.payload) } };
+      return {
+        ...state,
+        entities: { ...normalizeStateData(action.payload) },
+      };
     case FETCH_PRODUCTS_FROM_CACHE_SUCCESS:
       return {
         ...state,

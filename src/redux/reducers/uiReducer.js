@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   showModal: false,
-  modalInfo: {},
+  modalInfo: undefined,
   isLoading: false,
 };
 
@@ -20,7 +20,7 @@ const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         showModal: false,
-        modalInfo: {},
+        modalInfo: undefined,
       };
     case SHOW_LOADER:
       return { ...state, isLoading: true };

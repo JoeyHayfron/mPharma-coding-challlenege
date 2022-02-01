@@ -1,25 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Input from "../Input";
 import Button from "../Button";
 import { connect } from "react-redux";
-import { hideModal, addProduct } from "../../redux/actions";
+import { hideModal, addProduct, editProduct } from "../../redux/actions";
 import moment from "moment";
 
 const AddEditDrugModal = (props) => {
   const [drugName, setDrugName] = useState(props.modalInfo.name);
-  const [drugPrice, setDrugPrice] = useState(props.modalInfo.name);
+  const [drugPrice, setDrugPrice] = useState(props.modalInfo.price);
 
   const addNewProduct = (e) => {
     e.preventDefault();
     props.addProduct({
       name: drugName,
-      price: drugPrice,
+      price: parseFloat(+drugPrice),
       date: moment(Date.now()).format("YYYY-MM-DDTHH:mm:ssZ"),
     });
     props.dismissModal();
   };
-  const editNewProduct = (productInfo) => {};
+
+  const editNewProduct = (e) => {
+    e.preventDefault();
+    let productInfo = {
+      id: props.modalInfo.id,
+      name: drugName,
+      price: parseFloat(+drugPrice),
+      date: moment(Date.now()).format("YYYY-MM-DDTHH:mm:ssZ"),
+    };
+
+    let previousInfo = {
+      id: props.modalInfo.id,
+      name: props.modalInfo.name,
+      price: props.modalInfo.price,
+    };
+
+    let editInfo = {
+      productInfo,
+      previousInfo,
+    };
+    props.editProduct(editInfo);
+    props.dismissModal();
+  };
 
   return (
     <Wrapper>
@@ -35,11 +57,27 @@ const AddEditDrugModal = (props) => {
           label="Price (GHS)"
           inputValue={drugPrice}
           onChange={(e) => setDrugPrice(e.target.value)}
-          type="number"
+          type="text"
+          pattern="[0-9]*"
         />
         <ButtonsWrapper>
-          <Button onClick={() => props.dismissModal()}>Cancel</Button>
-          <Button buttonType="primary" onClick={addNewProduct}>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              props.dismissModal();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            buttonType="primary"
+            onClick={(e) => {
+              if (props.modalInfo.modalType === "add-drug-modal")
+                addNewProduct(e);
+              else if (props.modalInfo.modalType === "edit-drug-modal")
+                editNewProduct(e);
+            }}
+          >
             {props.modalInfo.action}
           </Button>
         </ButtonsWrapper>
@@ -57,6 +95,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     dismissModal: () => dispatch(hideModal()),
     addProduct: (productInfo) => dispatch(addProduct(productInfo)),
+    editProduct: (productInfo) => dispatch(editProduct(productInfo)),
   };
 };
 

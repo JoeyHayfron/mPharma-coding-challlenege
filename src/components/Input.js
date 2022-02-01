@@ -19,6 +19,7 @@ const Input = (props) => {
         }}
         value={props.inputValue}
         onChange={props.onChange}
+        pattern={props.pattern}
         data-testid="custom-input"
       />
     </Wrapper>

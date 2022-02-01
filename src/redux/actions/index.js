@@ -2,6 +2,7 @@ import {
   SHOW_MODAL,
   HIDE_MODAL,
   ADD_PRODUCT,
+  EDIT_PRODUCT,
   FETCH_PRODUCTS_FROM_NETWORK_SUCCESS,
   FETCH_PRODUCTS_FROM_CACHE_SUCCESS,
   FETCH_PRODUCTS_FROM_NETWORK_FAILED,
@@ -27,6 +28,13 @@ export const hideModal = () => {
 export const addProduct = (productInfo) => {
   return {
     type: ADD_PRODUCT,
+    payload: productInfo,
+  };
+};
+
+export const editProduct = (productInfo) => {
+  return {
+    type: EDIT_PRODUCT,
     payload: productInfo,
   };
 };

@@ -17,6 +17,7 @@ const DrugList = (props) => {
             .map((id) => (
               <DrugListItem
                 key={id}
+                id={id}
                 name={props.entities.products.byId[id].name}
                 price={findLatestPrice(
                   props.entities.products.byId[id].prices,

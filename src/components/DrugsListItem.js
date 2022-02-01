@@ -1,5 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import { showModal, editProduct } from "../redux/actions";
 
 const DrugListItem = (props) => {
   return (
@@ -9,14 +11,34 @@ const DrugListItem = (props) => {
         <ItemPrice data-testid="item-price">GHS {props.price}</ItemPrice>
       </ItemDetails>
       <ButtonsWrapper>
-        <ImageButton src="/images/edit.png" height="25" />
+        <ImageButton
+          src="/images/edit.png"
+          height="25"
+          onClick={() =>
+            props.showModal({
+              modalType: "edit-drug-modal",
+              title: "Edit Drug",
+              action: "Save",
+              name: props.name,
+              price: props.price,
+              id: props.id,
+            })
+          }
+        />
         <ImageButton src="/images/delete.png" height="25" />
       </ButtonsWrapper>
     </Wrapper>
   );
 };
 
-export default DrugListItem;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    editDrug: (productInfo) => dispatch(editProduct(productInfo)),
+    showModal: (modalInfo) => dispatch(showModal(modalInfo)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(DrugListItem);
 
 const Wrapper = styled.div`
   padding: 30px 15px;

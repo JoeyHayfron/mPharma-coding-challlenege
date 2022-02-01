@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 import { cache, persistMiddleware } from "./cache";
 
 const Root = (props) => {
-  let cachedStore;
+  let cachedStore = {};
   cache.getAll().then((data) => {
     cachedStore = data;
   });

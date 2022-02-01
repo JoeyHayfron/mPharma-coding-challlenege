@@ -40,15 +40,73 @@ export const addNewProduct = (entities, productInfo) => {
     name: productInfo.name,
     prices: [nextPriceId],
   };
-  entities.products.allIds = [...entities.products.allIds, nextProductId];
+  entities.products.allIds = [
+    ...entities.products.allIds,
+    nextProductId.toString(),
+  ];
 
   entities.prices.byId[nextPriceId] = {
     id: nextProductId,
     price: productInfo.price,
     date: productInfo.date,
   };
-  entities.prices.allIds = [...entities.prices.allIds, nextPriceId];
+  entities.prices.allIds = [...entities.prices.allIds, nextPriceId.toString()];
+  return entities;
+};
 
-  console.log("ENTITIES", entities);
+export const editProduct = (entities, productInfo, previousInfo) => {
+  if (
+    productInfo.name === previousInfo.name &&
+    parseFloat(+productInfo.price).toFixed(2) ===
+      parseFloat(+previousInfo.price).toFixed(2)
+  ) {
+    //Nothing changed
+    return entities;
+  } else if (
+    productInfo.name !== previousInfo.name &&
+    parseFloat(+productInfo.price).toFixed(2) ===
+      parseFloat(+previousInfo.price).toFixed(2)
+  ) {
+    //Only name changed
+    return changeProductName(entities, productInfo);
+  } else if (
+    productInfo.name === previousInfo.name &&
+    parseFloat(+productInfo.price).toFixed(2) !==
+      parseFloat(+previousInfo.price).toFixed(2)
+  ) {
+    //Only price changed
+    return addProductPrice(entities, productInfo);
+  } else {
+    //Both changed
+    return addProductPrice(
+      changeProductName(entities, productInfo),
+      productInfo
+    );
+  }
+};
+
+const addProductPrice = (entities, productInfo) => {
+  let products = entities.products;
+  let prices = entities.prices;
+  const nextPriceId = entities.prices.allIds.length + 1;
+
+  prices.byId[nextPriceId] = {
+    id: nextPriceId,
+    price: productInfo.price,
+    date: productInfo.date,
+  };
+  prices.allIds = [...prices.allIds, nextPriceId.toString()];
+
+  entities.products.byId[productInfo.id].prices = [
+    ...products.byId[productInfo.id].prices,
+    nextPriceId,
+  ];
+  return entities;
+};
+
+const changeProductName = (entities, productInfo) => {
+  let products = entities.products;
+
+  products.byId[productInfo.id].name = productInfo.name;
   return entities;
 };

@@ -16,8 +16,8 @@ const DeleteDrugModal = (props) => {
     props.dismissModal();
   };
   return (
-    <Wrapper>
-      <h3>{props.modalInfo.title}</h3>
+    <Wrapper data-testid="delete-drug-modal">
+      <h3 data-testid="delete-drug-modal-title">{props.modalInfo.title}</h3>
       <div>
         Are you sure you want to delete{" "}
         <span
@@ -30,7 +30,11 @@ const DeleteDrugModal = (props) => {
       </div>
       <ButtonsWrapper>
         <Button onClick={() => props.dismissModal()}>Cancel</Button>
-        <Button buttonType="primary" onClick={deleteProduct}>
+        <Button
+          buttonType="primary"
+          onClick={deleteProduct}
+          data-testid="delete-drug-button"
+        >
           {props.modalInfo.action}
         </Button>
       </ButtonsWrapper>

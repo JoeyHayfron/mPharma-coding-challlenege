@@ -12,7 +12,7 @@ const Feedback = (props) => {
     }
   }, [props.feedbackInfo]);
   return (
-    <Wrapper showFeedback={props.showFeedback}>
+    <Wrapper showFeedback={props.showFeedback} data-testid="feedback">
       {props.feedbackInfo ? (
         <Content feedbackType={props.feedbackInfo.feedbackType}>
           <h3 style={{ margin: "0px" }}>{props.feedbackInfo.title}</h3>

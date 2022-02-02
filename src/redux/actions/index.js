@@ -68,7 +68,7 @@ export const fetchProductsSuccess = (products) => {
   };
 };
 
-const fetchProductsFromCache = (products) => {
+export const fetchProductsFromCache = (products) => {
   return {
     type: FETCH_PRODUCTS_FROM_CACHE_SUCCESS,
     payload: products,
@@ -92,7 +92,7 @@ export const fetchProductsAsync = () => {
     dispatch(showLoader());
     dispatch(hideFeedback());
     cache.getAll().then((data) => {
-      if (Object.keys(data).length > 0) {
+      if (data && Object.keys(data).length > 0) {
         dispatch(hideLoader());
         dispatch(fetchProductsFromCache(data.inventory));
       } else {

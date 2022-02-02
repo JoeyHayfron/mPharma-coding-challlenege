@@ -29,6 +29,7 @@ const DrugListItem = (props) => {
               id: props.id,
             })
           }
+          data-testid="edit-drug-icon"
         />
         <ImageButton
           src="/images/delete.png"
@@ -42,6 +43,7 @@ const DrugListItem = (props) => {
               action: "Delete",
             })
           }
+          data-testid="delete-drug-icon"
         />
       </ButtonsWrapper>
     </Wrapper>

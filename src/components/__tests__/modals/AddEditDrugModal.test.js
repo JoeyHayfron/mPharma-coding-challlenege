@@ -1,13 +1,22 @@
 import { render, screen } from "@testing-library/react";
 import AddEditDrugModal from "../../modals/AddEditDrugModal";
+import Root from "../../../Root";
 
 describe("<AddEditDrugModal />", () => {
   it("renders a modal to add a new drug", () => {
+    let state = {
+      ui: {
+        modalInfo: {
+          modalType: "add-drug-modal",
+          title: "Add Drug",
+          action: "Add",
+        },
+      },
+    };
     render(
-      <AddEditDrugModal
-        title="Add Drug"
-        modalAction={{ text: "Add", task: () => {} }}
-      />
+      <Root state={state}>
+        <AddEditDrugModal />
+      </Root>
     );
 
     const title = screen.queryByText("Add Drug");
@@ -18,13 +27,21 @@ describe("<AddEditDrugModal />", () => {
   });
 
   it("renders a modal to edit a drug", () => {
+    let state = {
+      ui: {
+        modalInfo: {
+          modalType: "edit-drug-modal",
+          title: "Edit Drug",
+          action: "Save",
+          name: "Para",
+          price: 20,
+        },
+      },
+    };
     render(
-      <AddEditDrugModal
-        title="Edit Drug"
-        drugName="Para"
-        drugPrice="GHS 20"
-        modalAction={{ text: "Add", task: () => {} }}
-      />
+      <Root state={state}>
+        <AddEditDrugModal />
+      </Root>
     );
 
     const title = screen.queryByText("Edit Drug");
@@ -34,7 +51,7 @@ describe("<AddEditDrugModal />", () => {
 
     expect(title).toBeInTheDocument();
     expect(drugName).toHaveDisplayValue("Para");
-    expect(drugPrice).toHaveDisplayValue("GHS 20");
+    expect(drugPrice).toHaveDisplayValue("20");
     expect(buttons.length).toBe(2);
   });
 });

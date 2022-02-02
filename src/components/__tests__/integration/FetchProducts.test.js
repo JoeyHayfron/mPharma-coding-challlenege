@@ -44,16 +44,16 @@ describe("Fetching a list products", () => {
     const lastItemDrugName = within(products[6]).queryByTestId("item-name");
     const lastItemDrugPrice = within(products[6]).queryByTestId("item-price");
     await waitFor(() =>
-      expect(firstItemDrugName).toHaveTextContent("Exforge 10mg")
+      expect(firstItemDrugName).toHaveTextContent("Paracetamol 20MG")
     );
     await waitFor(() =>
-      expect(firstItemDrugPrice).toHaveTextContent("GHS 10.99")
+      expect(firstItemDrugPrice).toHaveTextContent("GHS 13.20")
     );
     await waitFor(() =>
-      expect(lastItemDrugName).toHaveTextContent("Paracetamol 20MG")
+      expect(lastItemDrugName).toHaveTextContent("Exforge 10mg")
     );
     await waitFor(() =>
-      expect(lastItemDrugPrice).toHaveTextContent("GHS 13.20")
+      expect(lastItemDrugPrice).toHaveTextContent("GHS 10.99")
     );
   });
 });

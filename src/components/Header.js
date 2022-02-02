@@ -15,6 +15,7 @@ const Header = (props) => {
         data-testid="mpharma-logo"
       />
       <Button
+        data-testid="add-drug-button"
         type="primary"
         onClick={() => {
           props.showModal({

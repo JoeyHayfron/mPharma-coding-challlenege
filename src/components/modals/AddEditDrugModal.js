@@ -12,8 +12,12 @@ import {
 import moment from "moment";
 
 const AddEditDrugModal = (props) => {
-  const [drugName, setDrugName] = useState(props.modalInfo.name);
-  const [drugPrice, setDrugPrice] = useState(props.modalInfo.price);
+  const [drugName, setDrugName] = useState(
+    props.modalInfo.name ? props.modalInfo.name : ""
+  );
+  const [drugPrice, setDrugPrice] = useState(
+    props.modalInfo.price ? props.modalInfo.price : ""
+  );
 
   const hasErrors = () => {
     if (!drugName || !drugPrice) {
@@ -74,14 +78,15 @@ const AddEditDrugModal = (props) => {
   };
 
   return (
-    <Wrapper>
-      <h3>{props.modalInfo.title}</h3>
+    <Wrapper data-testid="add-edit-modal">
+      <h3 data-testid="add-edit-modal-title">{props.modalInfo.title}</h3>
       <form style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
         <Input
           label="Name"
           inputValue={drugName}
           onChange={(e) => setDrugName(e.target.value)}
           type="text"
+          data-testid="add-edit-modal-name-input"
         />
         <Input
           label="Price (GHS)"
@@ -89,9 +94,11 @@ const AddEditDrugModal = (props) => {
           onChange={(e) => setDrugPrice(e.target.value)}
           type="text"
           pattern="[0-9]*"
+          data-testid="add-edit-modal-price-input"
         />
         <ButtonsWrapper>
           <Button
+            data-testid="add-edit-modal-cancel-button"
             onClick={(e) => {
               e.preventDefault();
               props.dismissModal();
@@ -107,6 +114,7 @@ const AddEditDrugModal = (props) => {
               else if (props.modalInfo.modalType === "edit-drug-modal")
                 editNewProduct(e);
             }}
+            data-testid="add-edit-modal-action-button"
           >
             {props.modalInfo.action}
           </Button>
